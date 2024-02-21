@@ -59,8 +59,6 @@ public class EmployeeMainView extends JFrame{
 		getContentPane().add(btnNew);
 		
 		setSize(800,600);
-		setVisible(true);
-	
 	}
 	
 	public void actions() {
@@ -81,9 +79,9 @@ public class EmployeeMainView extends JFrame{
 						try {
 							dao.insertEmployess(tmp.getName(), tmp.getCpf(), tmp.getRole());
 							fillInEmployees();
-							JOptionPane.showMessageDialog(null,"Employee added");
+							JOptionPane.showMessageDialog(rootPane,"Employee added");
 						}catch(Exception e2){
-							JOptionPane.showMessageDialog(null, e);
+							JOptionPane.showMessageDialog(rootPane, e);
 						}
 					}
 					
@@ -94,9 +92,10 @@ public class EmployeeMainView extends JFrame{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
-				String updateID = JOptionPane.showInputDialog(null, "Enter the ID of the employee you want to update");
-				
+				EmployeeDAO dao = new EmployeeDAO();
+				String updateID = JOptionPane.showInputDialog(rootPane, "Enter the ID of the employee you want to update");
+				String employee = dao.searchEmployee(updateID);
+				JOptionPane.showMessageDialog(rootPane, employee);
 				EmployeeUpdateView employeeUpdateView = new EmployeeUpdateView();
 				employeeUpdateView.show();
 				
@@ -112,7 +111,7 @@ public class EmployeeMainView extends JFrame{
 		try {
 			employees = dao.readEmployees("employees");
 		} catch (SQLException e) {
-			JOptionPane.showMessageDialog(null, e);
+			JOptionPane.showMessageDialog(rootPane, e);
 		}
 		for(Employee employee : employees) {
 			txtList.append("ID: " + employee.getId() + " | Name: " + employee.getName() 

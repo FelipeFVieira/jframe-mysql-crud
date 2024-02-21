@@ -35,8 +35,8 @@ public class EmployeeDAO {
 	
 	
 	public void insertEmployess(String name, String cpf, String role) throws SQLException {
-	    String sql = "INSERT INTO " + "employees" + " (name, cpf, role) VALUES (?, ?, ?)";
 	    Connection conn = getConnection();
+		String sql = "INSERT INTO employees " + "(name, cpf, role) VALUES (?, ?, ?)";
 	    try (PreparedStatement statement = conn.prepareStatement(sql)) {
 	        statement.setString(1, name);
 	        statement.setString(2, cpf);
@@ -78,5 +78,31 @@ public class EmployeeDAO {
 	    
 	    return employees;
 	    
+	}
+	
+	public String searchEmployee(String id) {
+		Connection conn = getConnection();
+		String sql = "SELECT * FROM employees WHERE id = ?";
+		try(PreparedStatement statement = conn.prepareStatement(sql)){
+			statement.setString(1, id);
+			
+			ResultSet resultset = statement.executeQuery();
+			
+			if(resultset.next()) {
+				String resultId = resultset.getString("id");
+				String resultName = resultset.getString("name");
+				String resultCpf = resultset.getString("cpf");
+				String resultRole = resultset.getString("role");
+				
+				return "ID: " + resultId + " | Name: " + resultName +
+						   " | CPF: " + resultCpf + " | Role: " + resultRole;
+				
+			} 
+		    
+		} catch (SQLException e) {
+			 JOptionPane.showMessageDialog(employeeMainView, e);
+		}
+		
+		return "Employee not found!";
 	}
 }
