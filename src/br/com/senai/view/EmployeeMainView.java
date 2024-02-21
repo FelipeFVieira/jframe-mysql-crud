@@ -43,11 +43,16 @@ public class EmployeeMainView extends JFrame{
 	
 	public void boot() {
 		setLayout(null);
-		
+		txtList.setEditable(false);
+       
+        txtList.setBounds(50, 70, 500, 360);
+        
 		lblList.setBounds(50, 50, 300, 20);
+		
 		btnUpdate.setBounds(50, 450, 200, 20);
+		
 		btnNew.setBounds(260, 450, 200, 20); 
-		txtList.setBounds(50, 70, 500, 360);
+		
 		getContentPane().add(lblList);
 		getContentPane().add(txtList);
 		getContentPane().add(btnUpdate);
@@ -84,6 +89,21 @@ public class EmployeeMainView extends JFrame{
 					
 				}
 			});
+		
+		btnUpdate.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				String updateID = JOptionPane.showInputDialog(null, "Enter the ID of the employee you want to update");
+				
+				EmployeeUpdateView employeeUpdateView = new EmployeeUpdateView();
+				employeeUpdateView.show();
+				
+			}
+		});
+		
+		
 	}
 	
 	private void fillInEmployees() {

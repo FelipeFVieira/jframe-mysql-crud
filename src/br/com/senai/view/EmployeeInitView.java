@@ -20,7 +20,7 @@ public class EmployeeInitView extends JFrame{
 	
 	public void boot() {
 		setLayout(null);
-		lblStart.setBounds(250,250,300,20);
+		lblStart.setBounds(295,250,300,20);
 		btnStart.setBounds(270,280,200,20);
 		
 		getContentPane().add(lblStart);
