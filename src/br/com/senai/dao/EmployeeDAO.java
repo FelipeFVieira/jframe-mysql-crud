@@ -7,7 +7,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.JOptionPane;
 
@@ -46,12 +48,20 @@ public class EmployeeDAO {
 	        if (rowsInserted > 0) {
 	            JOptionPane.showMessageDialog(employeeMainView,"Insertion completed successfully!");
 	        }
-	    }
+	    } catch(Exception e){
+	    	JOptionPane.showMessageDialog(employeeMainView,"Insertion error!");
+	    } finally {
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	
 		
-	public List<Employee> readEmployees(String table) throws SQLException {
+	public List<Employee> readEmployees(String table){
 		Connection conn = getConnection();
 		List<Employee> employees = new ArrayList<Employee>();
 		
@@ -72,9 +82,15 @@ public class EmployeeDAO {
 	        }
 	        return employees;
 	        
-	    } catch (Exception ex) {
+	    } catch (SQLException ex) {
 	    	JOptionPane.showMessageDialog(employeeMainView,"Error reading employees: " + ex.getMessage());
-	    }
+	    } finally {
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
 	    
 	    return employees;
 	    
@@ -101,8 +117,48 @@ public class EmployeeDAO {
 		    
 		} catch (SQLException e) {
 			 JOptionPane.showMessageDialog(employeeMainView, e);
+		} finally {
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 		
 		return "Employee not found!";
+	}
+	
+	public void updateEmployee(int id, Map<String, Object> columns) {
+		Connection conn = getConnection();
+		
+	    try {
+	        StringBuilder sqlUpdate = new StringBuilder("UPDATE minha_tabela SET ");
+	        List<String> updateColumns = new ArrayList<>();
+
+	        for (Map.Entry<String, Object> entry : columns.entrySet()) {
+	            if (entry.getValue() != null) {
+	            	updateColumns.add(entry.getKey() + " = ?");
+	            }
+	        }
+
+	        sqlUpdate.append(String.join(", ", updateColumns));
+	        sqlUpdate.append(" WHERE id = ?");
+
+	        PreparedStatement updateStatement = conn.prepareStatement(sqlUpdate.toString());
+	        int parametroIndex = 1;
+
+	        for (Map.Entry<String, Object> entry : columns.entrySet()) {
+	            if (entry.getValue() != null) {
+	                updateStatement.setObject(parametroIndex++, entry.getValue());
+	            }
+	        }
+
+	        updateStatement.setInt(parametroIndex, id);
+
+	        updateStatement.executeUpdate();
+
+	    } catch (SQLException e) {
+	        System.out.println("Erro ao executar operação: " + e.getMessage());
+	    }
 	}
 }

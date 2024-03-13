@@ -10,9 +10,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import javax.swing.ScrollPaneConstants;
 
 import br.com.senai.dao.EmployeeDAO;
 import br.com.senai.model.Employee;
@@ -34,7 +32,7 @@ public class EmployeeMainView extends JFrame{
 		try {
 			employees = dao.readEmployees("Employees");
 			fillInEmployees();
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, e);
 		}
 		
@@ -93,9 +91,7 @@ public class EmployeeMainView extends JFrame{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				EmployeeDAO dao = new EmployeeDAO();
-				String updateID = JOptionPane.showInputDialog(rootPane, "Enter the ID of the employee you want to update");
-				String employee = dao.searchEmployee(updateID);
-				JOptionPane.showMessageDialog(rootPane, employee);
+				
 				EmployeeUpdateView employeeUpdateView = new EmployeeUpdateView();
 				employeeUpdateView.show();
 				
@@ -110,7 +106,7 @@ public class EmployeeMainView extends JFrame{
 		EmployeeDAO dao = new EmployeeDAO();
 		try {
 			employees = dao.readEmployees("employees");
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			JOptionPane.showMessageDialog(rootPane, e);
 		}
 		for(Employee employee : employees) {

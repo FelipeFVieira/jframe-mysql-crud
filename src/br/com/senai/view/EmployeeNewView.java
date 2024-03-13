@@ -29,6 +29,11 @@ public class EmployeeNewView extends JDialog {
 	private Employee employee = new Employee();
 	
 	public EmployeeNewView() {
+		boot();
+		actions();
+	}
+	
+	public void boot() {
 		setLayout(new FlowLayout()); 
 		
 		getContentPane().add(lblName);
@@ -42,6 +47,12 @@ public class EmployeeNewView extends JDialog {
 	
 		getContentPane().add(btnAdd); 
 		getContentPane().add(btnExit);
+		
+		setModal(true);
+		setSize(250, 600); 
+	}
+	
+	public void actions() {
 		
 		btnAdd.addActionListener(new ActionListener() {
 			
@@ -67,8 +78,7 @@ public class EmployeeNewView extends JDialog {
 			}
 		});
 		
-		setModal(true);
-		setSize(250, 600); 
+		
 		
 	}
 
